@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <!-- Header -->
+    <header class="">
+      <nav class="navbar navbar-expand-lg">
+        <div class="container">
+          <a class="navbar-brand" href="/"><h2>Wyzle blog<em>.</em></h2></a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item active">
+                <a class="nav-link" href="/">Главная
+                  <span class="sr-only">(current)</span>
+                </a>
+              </li> 
+              <li class="nav-item">
+                <a class="nav-link" href="about_me/">Обо мне</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="blog/">Лента</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="posts/">Пост</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="contacts/">Контакты</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Page Content -->
+    <!-- Banner Starts Here -->
+    {% include 'components/carousel_posts.html' %}
+    <!-- Banner Ends Here -->
+
+    {% include "components/adv.html" %}
+
+
+     <section class="blog-posts">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="all-blog-posts">
+              <div class="row">
+                  {% for post in posts %}
+                <div class="col-lg-12">
+                  <div class="blog-post">
+                    <div class="blog-thumb">
+                      <img src="{{ post.image.url }}" alt="">
+                    </div>
+                    <div class="down-content">
+                      <span>{{ post.category.first }}</span>
+                      <a href="/"><h4>{{ post.header }}</h4></a>
+                      <ul class="post-info">
+                        <li><a href="#">{{ post.author }}</a></li>
+                        <li><a href="#">{{ post.post_date }}</a></li>
+                        <li><a href="#">0 комментариев</a></li>
+                      </ul>
+                      <p>{{ post.body }}</p>
+                      <div class="post-options">
+                        <div class="row">
+                          <div class="col-6">
+                            <ul class="post-tags">
+
+                              <li><i class="fa fa-tags"></i></li>
+                                {% for tag in post.tag.all %}
+                              <li><a href="#">{{ tag|capfirst }}</a></li>
+                                {% endfor %}
+                            </ul>
+                          </div>
+                          <div class="col-6">
+                            <ul class="post-share">
+                              <li><i class="fa fa-share-alt"></i></li>
+                                {% for link in post.social_links.all %}
+                              <li><a href="{{ link.link }}">{{ link }}</a></li>
+                                {% endfor %}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+                <div class="col-lg-12">
+                  <div class="main-button">
+                    <a href="blog.html">Смотреть все</a>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="sidebar">
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="sidebar-item search">
+                    <form id="search_form" name="gs" method="GET" action="#">
+                      <input type="text" name="q" class="searchText" placeholder="Поиск" autocomplete="on">
+                    </form>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="sidebar-item recent-posts">
+                    <div class="sidebar-heading">
+                      <h2>Недавнее</h2>
+                    </div>
+                    <div class="content">
+                      <ul>
+                          {% for post in last_three_posts %}
+                        <li><a href="post-details.html">
+                          <h5>{{ post.header }}</h5>
+                          <span>{{ post.post_date }}</span>
+                        </a></li>
+                          {% endfor %}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="sidebar-item categories">
+                    <div class="sidebar-heading">
+                      <h2>Категории</h2>
+                    </div>
+                    <div class="content">
+                      <ul>
+                          {% for cat in categories %}
+                        <li><a href="#">- {{ cat.name|capfirst }}</a></li>
+
+                          {% endfor %}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="sidebar-item tags">
+                    <div class="sidebar-heading">
+                      <h2>Поиск по тегам</h2>
+                    </div>
+                    <div class="content">
+                      <ul>
+                          {% for tag in tags %}
+                        <li><a href="#">{{ tag.name|capfirst }}</a></li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}
